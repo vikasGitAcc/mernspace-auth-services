@@ -1,0 +1,17 @@
+{
+    "name": "auth_services",
+    "module": "index.ts",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "dev": "node index.ts",
+        "format": "bunx prettier . --write"
+    },
+    "devDependencies": {
+        "@types/bun": "latest",
+        "prettier": "3.9.9"
+    },
+    "peerDependencies": {
+        "typescript": "^7"
+    }
+}
