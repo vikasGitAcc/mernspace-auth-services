@@ -3,3 +3,11 @@ function test(name: string) {
 }
 
 test("vikas");
+
+const student = {
+    name: "vikas",
+    age: 25
+}
+
+const name = student["name"]
+console.log(name);
