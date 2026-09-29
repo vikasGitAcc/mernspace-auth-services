@@ -1,13 +1,17 @@
 function test(name: string) {
-    console.log("Welcome " + name);
+    // console.log("Welcome " + name);
+    return name;
 }
 
 test("vikas");
 
 const student = {
     name: "vikas",
-    age: 25
+    age: 25,
+};
+
+function name() {
+    return student.name;
 }
 
-const name = student["name"]
-console.log(name);
+name();

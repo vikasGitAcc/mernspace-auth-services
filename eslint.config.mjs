@@ -14,9 +14,8 @@ export default defineConfig({
     },
     ignores: ["node_modules"],
     rules: {
-        "no-console": "warn",
-        "no-var": "error",
-        "no-undefined": "error",
-        "dot-notation": "error"
+        // "no-console": "warn",
+        // "no-var": "error",
+        "dot-notation": "error",
     },
 });

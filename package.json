@@ -1,28 +1,36 @@
 {
-  "name": "auth_services",
-  "module": "index.ts",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "dev": "node index.ts",
-    "format": "bunx prettier . --write",
-    "lint:check": "bun eslint .",
-    "lint:fix": "bun eslint . --fix",
-    "prepare": "husky"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "@types/bun": "latest",
-    "eslint": "^10.11.0",
-    "husky": "^9.1.7",
-    "prettier": "3.9.9",
-    "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "typescript-eslint": "^8.71.0"
-  },
-  "peerDependencies": {
-    "typescript": "^7"
-  },
-  "dependencies": {
-    "@typescript-eslint/parser": "^8.71.0"
-  }
+    "name": "auth_services",
+    "module": "index.ts",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "dev": "node index.ts",
+        "format:fix": "prettier . --write",
+        "format:check": "prettier . --check",
+        "lint:check": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "prepare": "husky"
+    },
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@types/bun": "latest",
+        "eslint": "^10.11.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^17.6.0",
+        "prettier": "3.9.9",
+        "typescript": "npm:@typescript/typescript6@^6.0.2",
+        "typescript-eslint": "^8.71.0"
+    },
+    "peerDependencies": {
+        "typescript": "^7"
+    },
+    "dependencies": {
+        "@typescript-eslint/parser": "^8.71.0"
+    },
+    "lint-staged": {
+        "*.ts": [
+            "bun run format:fix",
+            "bun run lint:fix"
+        ]
+    }
 }
