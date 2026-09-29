@@ -1,17 +1,11 @@
-function test(name: string) {
-    // console.log("Welcome " + name);
-    return name;
-}
+import { config } from "dotenv";
 
-test("vikas");
+config();
 
-const student = {
-    name: "vikas",
-    age: 25,
+const { PORT } = process.env;
+
+const Config = {
+    PORT,
 };
 
-function name() {
-    return student.name;
-}
-
-name();
+export { Config };
