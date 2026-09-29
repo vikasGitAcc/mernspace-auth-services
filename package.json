@@ -4,7 +4,7 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "dev": "node index.ts",
+        "dev": "bun --watch index.ts",
         "format:fix": "prettier . --write",
         "format:check": "prettier . --check",
         "lint:check": "eslint .",
@@ -14,6 +14,7 @@
     "devDependencies": {
         "@eslint/js": "^10.0.1",
         "@types/bun": "latest",
+        "@types/express": "^5.0.6",
         "eslint": "^10.11.0",
         "husky": "^9.1.7",
         "lint-staged": "^17.6.0",
@@ -26,7 +27,8 @@
     },
     "dependencies": {
         "@typescript-eslint/parser": "^8.71.0",
-        "dotenv": "^18.0.4"
+        "dotenv": "^18.0.4",
+        "express": "^5.2.1"
     },
     "lint-staged": {
         "*.ts": [

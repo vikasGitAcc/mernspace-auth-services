@@ -1,3 +1,14 @@
 import { Config } from "..";
+import { app } from "./app";
 
-console.log(Config.PORT);
+function startServer() {
+    try {
+        app.listen(Config.PORT, () => {
+            console.log(`Listening on port: http://localhost:${Config.PORT}`);
+        });
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+startServer();

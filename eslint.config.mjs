@@ -12,9 +12,9 @@ export default defineConfig({
             projectService: true,
         },
     },
-    ignores: ["node_modules"],
+    ignores: ["node_modules", "src/server.ts"],
     rules: {
-        // "no-console": "warn",
+        "no-console": "error",
         // "no-var": "error",
         "dot-notation": "error",
     },
