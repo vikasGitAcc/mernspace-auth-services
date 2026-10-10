@@ -1,0 +1,29 @@
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-07T14:52:21.631Z"}
+{"level":"info","message":"Listening on port: http://localhost:3600","service":"auth_services","timestamp":"2026-10-07T14:52:21.632Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-07T14:52:55.596Z"}
+{"level":"info","message":"Listening on port: http://localhost:3600","service":"auth_services","timestamp":"2026-10-07T14:52:55.597Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-07T14:53:14.892Z"}
+{"level":"info","message":"Listening on port: http://localhost:3600","service":"auth_services","timestamp":"2026-10-07T14:53:14.894Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-07T14:53:18.307Z"}
+{"level":"info","message":"Listening on port: http://localhost:3600","service":"auth_services","timestamp":"2026-10-07T14:53:18.309Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-09T13:38:12.033Z"}
+{"level":"info","message":"Listening on port: http://localhost:3600","service":"auth_services","timestamp":"2026-10-09T13:38:12.034Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-09T13:40:06.037Z"}
+{"level":"info","message":"Listening on port: http://localhost:3600","service":"auth_services","timestamp":"2026-10-09T13:40:06.040Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T05:44:19.170Z"}
+{"level":"info","message":"Listening on port: http://localhost:3600","service":"auth_services","timestamp":"2026-10-10T05:44:19.171Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T12:39:46.692Z"}
+{"level":"info","message":"Listening on port: http://localhost:3600","service":"auth_services","timestamp":"2026-10-10T12:39:46.694Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T12:45:43.809Z"}
+{"level":"info","message":"Listening on port: http://localhost:3600","service":"auth_services","timestamp":"2026-10-10T12:45:43.810Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T12:45:52.365Z"}
+{"level":"info","message":"Listening on port: http://localhost:3600","service":"auth_services","timestamp":"2026-10-10T12:45:52.366Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T12:45:55.005Z"}
+{"level":"info","message":"Listening on port: http://localhost:3600","service":"auth_services","timestamp":"2026-10-10T12:45:55.006Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T12:53:20.074Z"}
+{"level":"info","message":"Listening on port: http://localhost:3600","service":"auth_services","timestamp":"2026-10-10T12:53:20.075Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T12:53:24.061Z"}
+{"level":"info","message":"Listening on port: http://localhost:3600","service":"auth_services","timestamp":"2026-10-10T12:53:24.062Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T12:54:04.884Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T13:17:59.101Z"}
+{"level":"info","message":"Listening on port: http://localhost:5501","service":"auth_services","timestamp":"2026-10-10T13:17:59.102Z"}
