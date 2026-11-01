@@ -10,8 +10,8 @@ import {
 import { app } from "../../src/app.ts";
 import type { DataSource } from "typeorm";
 import { AppDataSource } from "../../src/config/data_source.ts";
-import { truncateTables } from "../utils/truncate.tuils.ts";
 import { User } from "../../src/entity/user.entity.ts";
+import { Roles } from "../../src/constants/index.ts";
 
 describe("/auth/register", () => {
     let connection: DataSource;
@@ -22,7 +22,8 @@ describe("/auth/register", () => {
 
     beforeEach(async () => {
         // database truncate
-        await truncateTables(connection);
+        await connection.dropDatabase();
+        await connection.synchronize();
     });
 
     afterAll(async () => {
@@ -91,6 +92,22 @@ describe("/auth/register", () => {
                 .post("/auth/register")
                 .send(userData);
             expect(response.body).toHaveProperty("id");
+        });
+
+        it("should assign role to the user", async () => {
+            const userData = {
+                firstname: "vikas",
+                lastname: "singh",
+                email: "vikas@spec.space",
+                password: "secret",
+            };
+
+            await request(app).post("/auth/register").send(userData);
+            const userRepository = connection.getRepository(User);
+            const users = await userRepository.find();
+
+            expect(users[0]).toHaveProperty("role");
+            expect(users[0]?.role).toBe(Roles.CUSTOMER);
         });
     });
 });
