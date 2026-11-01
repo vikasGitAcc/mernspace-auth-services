@@ -23,6 +23,7 @@ export class AuthController {
             email,
             password: "*******",
         });
+
         try {
             const userData = await this.userService.create({
                 firstname,

@@ -75,7 +75,6 @@ describe("/auth/register", () => {
             const users = await userRepository.find();
             expect(users).toHaveLength(1);
             expect(users[0]?.firstname).toBe(userData.firstname);
-            expect(users[0]?.password).toBe(userData.password);
             expect(users[0]?.lastname).toBe(userData.lastname);
             expect(users[0]?.email).toBe(userData.email);
         });
@@ -108,6 +107,42 @@ describe("/auth/register", () => {
 
             expect(users[0]).toHaveProperty("role");
             expect(users[0]?.role).toBe(Roles.CUSTOMER);
+        });
+
+        it("should store the hashed password in the database", async () => {
+            const userData = {
+                firstname: "vikas",
+                lastname: "singh",
+                email: "vikas@spec.space",
+                password: "secret",
+            };
+
+            await request(app).post("/auth/register").send(userData);
+            const userRepository = connection.getRepository(User);
+            const users = await userRepository.find();
+
+            expect(users[0]).toHaveProperty("password");
+            expect(users[0]?.password).not.toBe(userData.password);
+            expect(users[0]?.password).toHaveLength(60);
+            expect(users[0]?.password).toMatch(/^\$2b\$\d+\$/);
+        });
+
+        it("should return 400 if email already exists in the database", async () => {
+            const userData = {
+                firstname: "vikas",
+                lastname: "singh",
+                email: "vikas@spec.space",
+                password: "secret",
+            };
+            const userRepository = connection.getRepository(User);
+            await userRepository.save({ ...userData, role: Roles.CUSTOMER });
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+            const users = await userRepository.find();
+
+            expect(response.statusCode).toBe(400);
+            expect(users).toHaveLength(1);
         });
     });
 });
