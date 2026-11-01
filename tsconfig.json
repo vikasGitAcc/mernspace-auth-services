@@ -1,13 +1,17 @@
 {
     "compilerOptions": {
         // Environment setup & latest features
-        "lib": ["ESNext"],
+        "lib": ["ESNext", "ES6"],
         "target": "ESNext",
         "module": "Preserve",
         "moduleDetection": "force",
         "jsx": "react-jsx",
         "allowJs": true,
-        "types": ["bun"],
+        "types": ["bun", "jest"],
+
+        //TypeORM
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
 
         // Bundler mode
         "moduleResolution": "bundler",

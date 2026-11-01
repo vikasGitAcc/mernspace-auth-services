@@ -1,14 +1,2 @@
-{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-07T14:52:21.630Z"}
-{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-07T14:52:55.596Z"}
-{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-07T14:53:14.891Z"}
-{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-07T14:53:18.305Z"}
-{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-09T13:38:12.031Z"}
-{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-09T13:40:06.036Z"}
-{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T05:44:19.169Z"}
-{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T12:39:46.691Z"}
-{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T12:45:43.808Z"}
-{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T12:45:52.365Z"}
-{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T12:45:55.004Z"}
-{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T12:53:20.072Z"}
-{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T12:53:24.061Z"}
-{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-10T13:17:59.099Z"}
+{"code":"3D000","file":"postinit.c","length":90,"level":"error","message":"Error connecting to PostgreSQL database: database \"root\" does not exist","name":"error","routine":"InitPostgres","service":"auth_services","severity":"FATAL","stack":"error: database \"root\" does not exist\n    at parseErrorMessage (E:\\Rakesh\\Mern_Stack_Projects\\pizza_food_delivery\\backend\\auth_services\\node_modules\\pg-protocol\\dist\\parser.js:306:26)\n    at handlePacket (E:\\Rakesh\\Mern_Stack_Projects\\pizza_food_delivery\\backend\\auth_services\\node_modules\\pg-protocol\\dist\\parser.js:143:27)\n    at parse (E:\\Rakesh\\Mern_Stack_Projects\\pizza_food_delivery\\backend\\auth_services\\node_modules\\pg-protocol\\dist\\parser.js:37:38)\n    at emit (node:events:100:22)\n    at addChunk (internal:streams/readable:267:47)\n    at readableAddChunkPushByteMode (internal:streams/readable:245:18)\n    at data (node:net:633:72)","timestamp":"2026-10-27T13:24:25.251Z"}
+{"level":"error","message":"error.....","service":"auth_services","timestamp":"2026-10-27T13:24:25.262Z"}

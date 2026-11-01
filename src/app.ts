@@ -1,16 +1,22 @@
+import "reflect-metadata";
 import express, {
     type NextFunction,
     type Request,
     type Response,
 } from "express";
 import type { HttpError } from "http-errors";
+import authRouter from "./routes/auth.ts";
 // import { logger } from "./config/winston";
 
 const app = express();
 
+app.use(express.json());
+
 app.get("/", (req, res) => {
     res.send("Welcome");
 });
+
+app.use("/auth", authRouter);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
