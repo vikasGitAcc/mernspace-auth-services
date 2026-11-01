@@ -73,9 +73,24 @@ describe("/auth/register", () => {
             const userRepository = connection.getRepository(User);
             const users = await userRepository.find();
             expect(users).toHaveLength(1);
+            expect(users[0]?.firstname).toBe(userData.firstname);
+            expect(users[0]?.password).toBe(userData.password);
+            expect(users[0]?.lastname).toBe(userData.lastname);
+            expect(users[0]?.email).toBe(userData.email);
         });
-        // describe("files are missing", () => {
 
-        // })
+        it("should verify the id of the newly created user", async () => {
+            const userData = {
+                firstname: "vikas",
+                lastname: "singh",
+                email: "vikas@spec.space",
+                password: "secret",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+            expect(response.body).toHaveProperty("id");
+        });
     });
 });
