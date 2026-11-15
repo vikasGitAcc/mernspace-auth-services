@@ -41,6 +41,7 @@
         "bcrypt": "^6.0.0",
         "dotenv": "^18.0.4",
         "express": "^5.2.1",
+        "express-validator": "^7.3.2",
         "http-errors": "^2.0.1",
         "nodemon": "^1.14.10",
         "pg": "^8.23.1",

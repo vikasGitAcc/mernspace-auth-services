@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import request from "supertest";
 import {
     describe,
@@ -143,6 +144,66 @@ describe("/auth/register", () => {
 
             expect(response.statusCode).toBe(400);
             expect(users).toHaveLength(1);
+        });
+
+        it("should return id of the newly registered user in response", async () => {
+            const userData = {
+                firstname: "vikas",
+                lastname: "singh",
+                email: "vikas@spec.space",
+                password: "secret",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+            const userRepository = connection.getRepository(User);
+            const users = await userRepository.find();
+
+            expect(response.body).toHaveProperty("id");
+
+            expect(response.body?.id).toBeDefined();
+            expect(typeof response.body?.id).toBe("number");
+            expect(response.body?.id).toBe(users[0]?.id);
+        });
+    });
+
+    describe("Given missing fields", () => {
+        it("should return 400 if email is missing", async () => {
+            const userData = {
+                firstname: "vikas",
+                lastname: "singh",
+                password: "secret",
+                email: "",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            // console.log(response.body);
+
+            expect(response.statusCode).toBe(400);
+            const usersRepository = connection.getRepository(User);
+            const users = await usersRepository.find();
+            expect(users).toHaveLength(0);
+        });
+    });
+
+    describe("Fields are not in proper format", () => {
+        it("should trim the email", async () => {
+            const userData = {
+                firstname: "vikas",
+                lastname: "singh",
+                email: " vikas@spec.space ",
+                password: "secret",
+            };
+
+            await request(app).post("/auth/register").send(userData);
+            const userRepository = connection.getRepository(User);
+            const users = await userRepository.find();
+
+            expect(users[0]?.email).toBe("vikas@spec.space");
         });
     });
 });
