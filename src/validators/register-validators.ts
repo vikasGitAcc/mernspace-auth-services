@@ -5,6 +5,25 @@ export default checkSchema({
         errorMessage: "Email is required!",
         notEmpty: true,
         trim: true,
+        isEmail: {
+            errorMessage: "Email is invalid!",
+        },
+    },
+    firstname: {
+        errorMessage: "Firstname is required!",
+        notEmpty: true,
+    },
+    lastname: {
+        errorMessage: "Lastname is required!",
+        notEmpty: true,
+    },
+    password: {
+        errorMessage: "Password is required!",
+        notEmpty: true,
+        isLength: {
+            options: { min: 8 },
+            errorMessage: "Password must be at least 8 characters long!",
+        },
     },
 });
 

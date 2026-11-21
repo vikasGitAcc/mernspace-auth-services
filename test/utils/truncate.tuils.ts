@@ -1,4 +1,5 @@
 import type { DataSource } from "typeorm";
+import { logger } from "../../src/config/winston";
 
 export const truncateTables = async (connection: DataSource) => {
     const entities = connection.entityMetadatas;
@@ -7,3 +8,21 @@ export const truncateTables = async (connection: DataSource) => {
         await repository.clear();
     }
 };
+
+export function isJWT(token: string | null): boolean {
+    if (token === null) return false;
+
+    const parts = token.split(".");
+    if (parts.length !== 3) return false;
+
+    try {
+        parts.forEach((part) => {
+            Buffer.from(part, "base64").toString("utf-8");
+        });
+
+        return true;
+    } catch (err) {
+        logger.info(err);
+        return false;
+    }
+}

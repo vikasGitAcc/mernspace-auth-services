@@ -13,6 +13,7 @@ import type { DataSource } from "typeorm";
 import { AppDataSource } from "../../src/config/data_source.ts";
 import { User } from "../../src/entity/user.entity.ts";
 import { Roles } from "../../src/constants/index.ts";
+import { isJWT } from "../utils/truncate.tuils.ts";
 
 describe("/auth/register", () => {
     let connection: DataSource;
@@ -37,7 +38,7 @@ describe("/auth/register", () => {
                 firstname: "vikas",
                 lastname: "singh",
                 email: "vikas@spec.space",
-                password: "secret",
+                password: "secret123",
             };
 
             const res = await request(app)
@@ -52,7 +53,7 @@ describe("/auth/register", () => {
                 firstname: "vikas",
                 lastname: "singh",
                 email: "vikas@spec.space",
-                password: "secret",
+                password: "secret123",
             };
 
             const res = await request(app)
@@ -68,7 +69,7 @@ describe("/auth/register", () => {
                 firstname: "vikas",
                 lastname: "singh",
                 email: "vikas@spec.space",
-                password: "secret",
+                password: "secret123",
             };
 
             await request(app).post("/auth/register").send(userData);
@@ -85,7 +86,7 @@ describe("/auth/register", () => {
                 firstname: "vikas",
                 lastname: "singh",
                 email: "vikas@spec.space",
-                password: "secret",
+                password: "secret123",
             };
 
             const response = await request(app)
@@ -99,7 +100,7 @@ describe("/auth/register", () => {
                 firstname: "vikas",
                 lastname: "singh",
                 email: "vikas@spec.space",
-                password: "secret",
+                password: "secret123",
             };
 
             await request(app).post("/auth/register").send(userData);
@@ -115,7 +116,7 @@ describe("/auth/register", () => {
                 firstname: "vikas",
                 lastname: "singh",
                 email: "vikas@spec.space",
-                password: "secret",
+                password: "secret123",
             };
 
             await request(app).post("/auth/register").send(userData);
@@ -133,7 +134,7 @@ describe("/auth/register", () => {
                 firstname: "vikas",
                 lastname: "singh",
                 email: "vikas@spec.space",
-                password: "secret",
+                password: "secret123",
             };
             const userRepository = connection.getRepository(User);
             await userRepository.save({ ...userData, role: Roles.CUSTOMER });
@@ -146,12 +147,12 @@ describe("/auth/register", () => {
             expect(users).toHaveLength(1);
         });
 
-        it("should return id of the newly registered user in response", async () => {
+        it("should return the id of the newly registered user in response", async () => {
             const userData = {
                 firstname: "vikas",
                 lastname: "singh",
                 email: "vikas@spec.space",
-                password: "secret",
+                password: "secret123",
             };
 
             const response = await request(app)
@@ -166,6 +167,53 @@ describe("/auth/register", () => {
             expect(typeof response.body?.id).toBe("number");
             expect(response.body?.id).toBe(users[0]?.id);
         });
+
+        it("should return validation errors in array format", async () => {
+            const userData = {
+                firstname: "",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+            expect(Array.isArray(response.body.errors)).toBe(true);
+        });
+
+        it("should return access token and refresh token in the response", async () => {
+            const userData = {
+                firstname: "vikas",
+                lastname: "singh",
+                email: "vikas@spec.space",
+                password: "secret123",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            let accessToken = null;
+            let refreshToken = null;
+
+            interface Headers {
+                "set-cookie"?: string[];
+            }
+
+            const cookies = (response.headers as Headers)["set-cookie"] || [];
+            cookies.forEach((cookie: string) => {
+                if (cookie.startsWith("accessToken=")) {
+                    accessToken = cookie.split(";")[0]?.split("=")[1];
+                }
+                if (cookie.startsWith("refreshToken=")) {
+                    refreshToken = cookie.split(";")[0]?.split("=")[1];
+                }
+            });
+
+            expect(accessToken).not.toBeNull();
+            expect(refreshToken).not.toBeNull();
+
+            expect(isJWT(accessToken)).toBeTruthy();
+            expect(isJWT(refreshToken)).toBeTruthy();
+        });
     });
 
     describe("Given missing fields", () => {
@@ -173,7 +221,7 @@ describe("/auth/register", () => {
             const userData = {
                 firstname: "vikas",
                 lastname: "singh",
-                password: "secret",
+                password: "secret123",
                 email: "",
             };
 
@@ -188,15 +236,60 @@ describe("/auth/register", () => {
             const users = await usersRepository.find();
             expect(users).toHaveLength(0);
         });
+
+        it("should return 400 if firstname is missing", async () => {
+            const userData = {
+                firstname: "",
+                lastname: "singh",
+                email: "vikas@spec.space",
+                password: "secret123",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            expect(response.statusCode).toBe(400);
+        });
+
+        it("should return 400 if lastname is missing", async () => {
+            const userData = {
+                firstname: "vikas",
+                lastname: "",
+                email: "vikas@spec.space",
+                password: "secret123",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            expect(response.statusCode).toBe(400);
+        });
+
+        it("should return 400 if password is missing", async () => {
+            const userData = {
+                firstname: "vikas",
+                lastname: "singh",
+                email: "vikas@spec.space",
+                password: "",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            expect(response.statusCode).toBe(400);
+        });
     });
 
     describe("Fields are not in proper format", () => {
-        it("should trim the email", async () => {
+        it("should trim the email field", async () => {
             const userData = {
                 firstname: "vikas",
                 lastname: "singh",
                 email: " vikas@spec.space ",
-                password: "secret",
+                password: "secret123",
             };
 
             await request(app).post("/auth/register").send(userData);
@@ -204,6 +297,37 @@ describe("/auth/register", () => {
             const users = await userRepository.find();
 
             expect(users[0]?.email).toBe("vikas@spec.space");
+        });
+
+        it("should return 400 if email is in invalid format", async () => {
+            const userData = {
+                firstname: "vikas",
+                lastname: "singh",
+                email: "invalid-email",
+                password: "secret123",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            // console.log(response.body);
+
+            expect(response.statusCode).toBe(400);
+        });
+
+        it("should return 400 if password length is less than 8 characters", async () => {
+            const userData = {
+                firstname: "vikas",
+                lastname: "singh",
+                email: "vikas@spec.space",
+                password: "1234567",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+            expect(response.statusCode).toBe(400);
         });
     });
 });
