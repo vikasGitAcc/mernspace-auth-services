@@ -3,20 +3,14 @@ import type { RegisterUserRequest } from "../types/user.types.ts";
 import type { UserServices } from "../services/user.services.ts";
 import type { Logger } from "winston";
 import { validationResult } from "express-validator";
-import jwt from "jsonwebtoken";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import { readFileSync } from "node:fs";
-import { Config } from "../config/config.ts";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import type { TokenService } from "../services/token.services.ts";
 
 export class AuthController {
     private userService: UserServices;
     constructor(
         service: UserServices,
-        private logger: Logger
+        private logger: Logger,
+        private tokenService: TokenService
     ) {
         this.userService = service;
     }
@@ -53,38 +47,18 @@ export class AuthController {
             });
 
             const payload = {
-                sub: userData.id,
+                sub: String(userData.id),
                 role: userData.role,
             };
 
-            let privateKey: Buffer | string;
+            const newRefreshToken =
+                await this.tokenService.persistRefreshToken(userData);
 
-            try {
-                privateKey = readFileSync(
-                    path.join(__dirname, "../../certs/privateKey.pem"),
-                    "utf-8"
-                );
-            } catch (err) {
-                next(err);
-                return;
-            }
+            const accessToken = this.tokenService.generateAccessToken(payload);
 
-            const accessToken = jwt.sign(payload, privateKey, {
-                algorithm: "RS256",
-                expiresIn:
-                    Config.ACCESS_TOKEN_EXPIRE as jwt.SignOptions["expiresIn"],
-                issuer: "auth_service",
-            });
-
-            const refreshToken = jwt.sign(
+            const refreshToken = this.tokenService.generateRefreshToken(
                 payload,
-                Config.REFRESH_TOKEN_SECRET!,
-                {
-                    algorithm: "HS256",
-                    expiresIn:
-                        Config.REFRESH_TOKEN_EXPIRE as jwt.SignOptions["expiresIn"],
-                    issuer: "auth_service",
-                }
+                newRefreshToken
             );
 
             res.cookie("accessToken", accessToken, {

@@ -2,6 +2,7 @@ import { DataSource } from "typeorm";
 import { User } from "../entity/user.entity.ts";
 import { Config } from "./config.ts";
 import { logger } from "./winston.ts";
+import { RefreshToken } from "../entity/refreshToken.entity.ts";
 
 logger.info("Host: ", Config.DB_HOST);
 logger.info("PORT: ", Config.DB_PORT);
@@ -19,6 +20,6 @@ export const AppDataSource = new DataSource({
     //Don't use it in the production, Keep it always false
     synchronize: false,
     logging: false,
-    entities: [User],
+    entities: [User, RefreshToken],
     migrations: [],
 });

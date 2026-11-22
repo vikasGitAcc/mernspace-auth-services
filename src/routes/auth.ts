@@ -6,11 +6,15 @@ import { AppDataSource } from "../config/data_source.ts";
 import { User } from "../entity/user.entity.ts";
 import { logger } from "../config/winston.ts";
 import registerValidators from "../validators/register-validators.ts";
+import { TokenService } from "../services/token.services.ts";
+import { RefreshToken } from "../entity/refreshToken.entity.ts";
 
 const router = express.Router();
 const userRespository = AppDataSource.getRepository(User);
+const refreshTokenRepo = AppDataSource.getRepository(RefreshToken);
 const userService = new UserServices(userRespository);
-const authController = new AuthController(userService, logger);
+const tokenService = new TokenService(refreshTokenRepo);
+const authController = new AuthController(userService, logger, tokenService);
 
 router.post(
     "/register",

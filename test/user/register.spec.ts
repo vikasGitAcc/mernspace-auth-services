@@ -14,6 +14,7 @@ import { AppDataSource } from "../../src/config/data_source.ts";
 import { User } from "../../src/entity/user.entity.ts";
 import { Roles } from "../../src/constants/index.ts";
 import { isJWT } from "../utils/truncate.tuils.ts";
+import { RefreshToken } from "../../src/entity/refreshToken.entity.ts";
 
 describe("/auth/register", () => {
     let connection: DataSource;
@@ -213,6 +214,22 @@ describe("/auth/register", () => {
 
             expect(isJWT(accessToken)).toBeTruthy();
             expect(isJWT(refreshToken)).toBeTruthy();
+        });
+
+        it("should store refresh token in the database", async () => {
+            const userData = {
+                firstname: "vikas",
+                lastname: "singh",
+                email: "vikas@spec.space",
+                password: "secret123",
+            };
+
+            await request(app).post("/auth/register").send(userData);
+
+            const refreshTokenRepo = connection.getRepository(RefreshToken);
+            const refreshTokens = await refreshTokenRepo.find();
+
+            expect(refreshTokens).toHaveLength(1);
         });
     });
 
