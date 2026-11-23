@@ -147,6 +147,7 @@ vite.config.ts.timestamp-*
 .vite/
 
 #Logger
-logger
+Logger/
+logger/
 combine.info
 console.error
