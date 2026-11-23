@@ -1,24 +1,17 @@
 import { DataSource } from "typeorm";
 import { User } from "../entity/user.entity.ts";
 import { Config } from "./config.ts";
-import { logger } from "./winston.ts";
 import { RefreshToken } from "../entity/refreshToken.entity.ts";
-
-logger.info("Host: ", Config.DB_HOST);
-logger.info("PORT: ", Config.DB_PORT);
-logger.info("USERNAME: ", Config.DB_USERNAME);
-logger.info("PASSWORD: ", Config.DB_PASSWORD);
-logger.info("NAME: ", Config.DB_NAME);
 
 export const AppDataSource = new DataSource({
     type: "postgres",
-    host: Config.DB_HOST || "localhost",
-    port: Number(Config.DB_PORT) || 5432,
-    username: Config.DB_USERNAME || "root",
-    password: Config.DB_PASSWORD || "root",
-    database: Config.DB_NAME || "",
+    host: Config.DB_HOST,
+    port: Number(Config.DB_PORT),
+    username: Config.DB_USERNAME,
+    password: Config.DB_PASSWORD,
+    database: Config.DB_NAME,
     //Don't use it in the production, Keep it always false
-    synchronize: false,
+    synchronize: true,
     logging: false,
     entities: [User, RefreshToken],
     migrations: [],

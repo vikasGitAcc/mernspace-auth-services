@@ -18,8 +18,6 @@ const {
     DB_PORT,
     DB_HOST,
     REFRESH_TOKEN_SECRET,
-    REFRESH_TOKEN_EXPIRE,
-    ACCESS_TOKEN_EXPIRE,
 } = process.env;
 
 const Config = {
@@ -31,8 +29,6 @@ const Config = {
     DB_PORT,
     DB_HOST,
     REFRESH_TOKEN_SECRET,
-    ACCESS_TOKEN_EXPIRE,
-    REFRESH_TOKEN_EXPIRE,
 };
 
 export { Config };

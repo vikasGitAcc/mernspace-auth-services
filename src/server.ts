@@ -7,7 +7,6 @@ async function startServer() {
     try {
         await connectToDatabase();
         app.listen(Config.PORT, () => {
-            logger.error("error.....");
             logger.info(`Listening on port: http://localhost:${Config.PORT}`);
         });
     } catch (err) {
