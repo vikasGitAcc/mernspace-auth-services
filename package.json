@@ -10,8 +10,8 @@
         "lint:check": "eslint .",
         "lint:fix": "eslint . --fix",
         "prepare": "husky",
-        "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --verbose",
-        "test:watch": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --watchAll --verbose"
+        "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --verbose --runInBand",
+        "test:watch": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --watchAll --verbose --runInBand"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",

@@ -1,16 +1,21 @@
 import type { Response, NextFunction } from "express";
-import type { RegisterUserRequest } from "../types/user.types.ts";
+import type {
+    LoginUserRequest,
+    RegisterUserRequest,
+} from "../types/user.types.ts";
 import type { UserServices } from "../services/user.services.ts";
 import type { Logger } from "winston";
 import { validationResult } from "express-validator";
 import type { TokenService } from "../services/token.services.ts";
+import type { CredentialService } from "../services/credentials.service.ts";
 
 export class AuthController {
     private userService: UserServices;
     constructor(
         service: UserServices,
         private logger: Logger,
-        private tokenService: TokenService
+        private tokenService: TokenService,
+        private credentialService: CredentialService
     ) {
         this.userService = service;
     }
@@ -31,7 +36,9 @@ export class AuthController {
         const result = validationResult(req);
 
         if (!result.isEmpty()) {
-            return res.status(400).json({ errors: result.array() });
+            return res
+                .status(400)
+                .json({ errors: result.array({ onlyFirstError: true }) });
         }
 
         try {
@@ -75,6 +82,57 @@ export class AuthController {
             });
 
             return res.status(201).json({ id: userData.id });
+        } catch (err) {
+            next(err);
+            return;
+        }
+    }
+
+    async login(req: LoginUserRequest, res: Response, next: NextFunction) {
+        const { email, password } = req.body;
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res
+                .status(400)
+                .json({ errors: errors.array({ onlyFirstError: true }) });
+        }
+
+        try {
+            const user = await this.userService.findByEmail(email);
+            await this.credentialService.comparePassword(
+                password,
+                user.password
+            );
+
+            const payload = {
+                sub: String(user.id),
+                role: user.role,
+            };
+
+            const newRefreshToken =
+                await this.tokenService.persistRefreshToken(user);
+            const accessToken = this.tokenService.generateAccessToken(payload);
+            const refreshToken = this.tokenService.generateRefreshToken(
+                payload,
+                newRefreshToken
+            );
+
+            res.cookie("accessToken", accessToken, {
+                domain: "localhost",
+                httpOnly: true,
+                sameSite: "strict",
+                maxAge: 60 * 60 * 1000, // 1 hour
+            });
+
+            res.cookie("refreshToken", refreshToken, {
+                domain: "localhost",
+                httpOnly: true,
+                sameSite: "strict",
+                maxAge: 365 * 24 * 60 * 60 * 1000, // 1 Year
+            });
+
+            return res.status(200).json({ id: user.id });
         } catch (err) {
             next(err);
             return;

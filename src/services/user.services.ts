@@ -27,4 +27,14 @@ export class UserServices {
             role: Roles.CUSTOMER,
         });
     }
+
+    async findByEmail(email: string) {
+        const user = await this.userRepository.findOne({ where: { email } });
+        if (!user) {
+            const error = createHttpError(404, "Invalid email or password!");
+            throw error;
+        }
+
+        return user;
+    }
 }
