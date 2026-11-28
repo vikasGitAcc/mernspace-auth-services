@@ -1,4 +1,5 @@
 import type { Response, NextFunction } from "express";
+import type { AuthRequest } from "../types/user.types.ts";
 import type {
     LoginUserRequest,
     RegisterUserRequest,
@@ -91,6 +92,11 @@ export class AuthController {
     async login(req: LoginUserRequest, res: Response, next: NextFunction) {
         const { email, password } = req.body;
 
+        this.logger.info("Login request received", {
+            email,
+            password: "*******",
+        });
+
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res
@@ -137,5 +143,10 @@ export class AuthController {
             next(err);
             return;
         }
+    }
+
+    async self(req: AuthRequest, res: Response) {
+        const user = await this.userService.findById(Number(req.auth.sub));
+        return res.json({ ...user });
     }
 }

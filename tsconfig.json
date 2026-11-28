@@ -13,6 +13,8 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
 
+        "esModuleInterop": true,
+
         // Bundler mode
         "moduleResolution": "bundler",
         "allowImportingTsExtensions": true,
