@@ -83,6 +83,39 @@ describe("GET /auth/self", () => {
                 user.id
             );
         });
+
+        it("should exclude password from the response", async () => {
+            const userData = {
+                firstname: "vikas",
+                lastname: "singh",
+                email: "vikas@spec.space",
+                password: "secret123",
+            };
+            const userRepository = connection.getRepository(User);
+            const user = await userRepository.save({
+                ...userData,
+                role: Roles.CUSTOMER,
+            });
+
+            const accessToken = jwks.token({
+                sub: String(user.id),
+                role: user.role,
+            });
+
+            const res = await request(app)
+                .get("/auth/self")
+                .set("Cookie", [`accessToken=${accessToken};`])
+                .send();
+
+            expect(res.body as Record<string, string>).not.toHaveProperty(
+                "password"
+            );
+        });
+
+        it("should return code 401 if tokens are missing", async () => {
+            const res = await request(app).get("/auth/self").send();
+            expect(res.statusCode).toBe(401);
+        });
     });
 
     // describe("Given missing fields", () => {

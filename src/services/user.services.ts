@@ -29,7 +29,10 @@ export class UserServices {
     }
 
     async findByEmail(email: string) {
-        const user = await this.userRepository.findOne({ where: { email } });
+        const user = await this.userRepository.findOne({
+            where: { email },
+            select: ["id", "role", "password"],
+        });
         if (!user) {
             const error = createHttpError(404, "Invalid email or password!");
             throw error;

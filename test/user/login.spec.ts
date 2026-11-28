@@ -36,7 +36,7 @@ describe("POST /auth/login", () => {
             expect(res.status).toBe(200);
         });
 
-        it("should return 400 if password is invalid", async () => {
+        it("should return 400 if email or password is invalid", async () => {
             const userData = {
                 email: "vikas@spec.space",
                 password: "secret1234",

@@ -153,3 +153,6 @@ Logger/
 logger/
 combine.info
 console.error
+
+#static files
+public/
